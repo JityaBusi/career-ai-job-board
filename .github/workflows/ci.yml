@@ -1,29 +1,52 @@
-name: CI
+name: CareerAI CI
 
 on:
   push:
     branches:
       - main
-
   pull_request:
     branches:
       - main
 
 jobs:
-  build:
+  frontend:
+    name: Frontend Build
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 20
 
-      - name: Install Dependencies
+      - name: Install Frontend Dependencies
         run: npm install
 
-      - name: Build Project
+      - name: Build Frontend
         run: npm run build
+
+  backend:
+    name: Backend Build
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Backend Dependencies
+        run: npm install
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
