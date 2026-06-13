@@ -41,11 +41,15 @@ export default function Register() {
       );
 
       navigate("/login");
-    } catch {
-      alert(
-        "Registration failed"
-      );
-    }
+    } catch (error: any) {
+  console.error(error);
+
+  alert(
+    error?.response?.data?.message ||
+    error?.message ||
+    "Registration failed"
+  );
+}
   };
 
   return (
